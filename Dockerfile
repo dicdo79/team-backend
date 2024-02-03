@@ -9,9 +9,9 @@ RUN apt-get update && \
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 # Download and extract Tomcat
-RUN wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.85/bin/apache-tomcat-9.0.85.tar.gz --no-check-certificate \
-    && tar -xvf apache-tomcat-9.0.85.tar.gz -C /sw/ \
-    && rm apache-tomcat-9.0.85.tar.gz
+RUN wget https://dlcdn.apache.org/tomcat/tomcat-10/v10.0.16/bin/apache-tomcat-10.0.16.tar.gz --no-check-certificate 
+    && tar -xvf apache-tomcat-10.0.16.tar.gz -C /sw/ 
+    && rm apache-tomcat-10.0.16.tar.gz
 
 # Set CATALINA_HOME environment variable
 ENV CATALINA_HOME=/sw/apache-tomcat-9.0.85
