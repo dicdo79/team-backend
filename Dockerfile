@@ -9,23 +9,25 @@ RUN apt-get update && \
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 # Download and extract Tomcat
-RUN wget https://dlcdn.apache.org/tomcat/tomcat-10/v10.0.16/bin/apache-tomcat-10.0.16.tar.gz --no-check-certificate \
-    && tar -xvf apache-tomcat-10.0.16.tar.gz -C /sw/ \
-    && rm apache-tomcat-10.0.16.tar.gz
+RUN mkdir /sw && \
+    wget https://archive.apache.org/dist/tomcat/tomcat-9/v9.0.85/bin/apache-tomcat-9.0.85.tar.gz --no-check-certificate \
+    && tar -xvf apache-tomcat-9.0.85.tar.gz -C /sw/ \
+    && rm apache-tomcat-9.0.85.tar.gz
 
 # Set CATALINA_HOME environment variable
 ENV CATALINA_HOME=/sw/apache-tomcat-9.0.85
 
 # Add custom server.xml
-ADD ./conf/server.xml /sw/apache-tomcat-9.0.85/conf/server.xml
+ADD ./conf/server.xml $CATALINA_HOME/conf/server.xml
 
 # Install MariaDB connector
-RUN wget https://dlm.mariadb.com/1965742/Connectors/java/connector-java-2.7.5/mariadb-java-client-2.7.5.jar --no-check-certificate \
-    && cp -p ~/mariadb-java-client-2.7.5.jar /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/ \
-    && cp -p ~/mariadb-java-client-2.7.5.jar /sw/apache-tomcat-9.0.85/lib
+RUN wget https://downloads.mariadb.com/Connectors/java/connector-java-2.7.5/mariadb-java-client-2.7.5.jar --no-check-certificate \
+    && cp -p mariadb-java-client-2.7.5.jar $JAVA_HOME/jre/lib/ext/ \
+    && cp -p mariadb-java-client-2.7.5.jar $CATALINA_HOME/lib \
+    && rm mariadb-java-client-2.7.5.jar
 
 # Expose AJP port
 EXPOSE 8009
 
 # Start Tomcat
-ENTRYPOINT ["/sw/apache-tomcat-9.0.85/bin/catalina.sh", "run"]
+ENTRYPOINT ["$CATALINA_HOME/bin/catalina.sh", "run"]
