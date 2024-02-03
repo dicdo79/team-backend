@@ -30,4 +30,4 @@ RUN wget https://downloads.mariadb.com/Connectors/java/connector-java-2.7.5/mari
 EXPOSE 8009
 
 # Start Tomcat
-ENTRYPOINT ["$CATALINA_HOME/bin/catalina.sh", "run"]
+CMD $CATALINA_HOME/bin/catalina.sh run
